@@ -51,6 +51,9 @@
 #ifdef EX22
 #include "utils/loofline_performace.h"
 #endif
+
+using namespace std;
+
 void inline _mm256_transpose_8x8_ps(__m256* dst, const __m256* src);
 void inline rot(double a, double b, double& x, double& y, double radian);
 void rot_withoutinline(double a, double b, double& x, double& y, double radian);
@@ -90,7 +93,7 @@ int main(const int argc, const char** argv)
 		const int loop = (arg_loop == 0) ? default_loop : arg_loop;
 		const int row = (arg_size == 0) ? default_size : arg_size;
 		const int col = row;
-		std::cout << "exercise 1: loop = " << loop << ", size = " << row << std::endl;
+		cout << "exercise 1: loop = " << loop << ", size = " << row << endl;
 
 		Mat_32F a(row, col);
 		mat_rand(a, 0.f, 100.f);
@@ -101,23 +104,32 @@ int main(const int argc, const char** argv)
 		Mat_32F ret(row, col);
 		mat_zero(ret);
 
-		CalcTime t;
-		std::cout << "|time    |ms  |" << std::endl;
-		std::cout << "|--------|----|" << std::endl;
+		CalcTime t_add, t_mul;
+		cout << "|count|mul_time    |add_time  |" << endl;
+		std::cout << "|-----|------------|----------|" << endl;
 		for (int i = 0; i < loop; i++)
 		{
-			t.start();	//時間計測開始
-			ret = mat_add(mat_mul(a, x), b);
-			t.end();	//時間計測終了
-			std::cout << "|time   " << i << "|" << t.getLastTime() << "|" << std::endl;
+			//行列積
+			t_mul.start();	//時間計測開始
+			Mat_32F mul = mat_mul(a, x);
+			t_mul.end();	//時間計測終了
+			
+			//行列和
+			t_add.start();	//時間計測開始
+			ret = mat_add(mul, b);
+			t_add.end();	//時間計測終了
+
+			cout << "|    " << i << "|" << t_mul.getLastTime() << "   |" << t_add.getLastTime() << "   |" << endl;
 		}
-		std::cout << "|time avg|" << t.getAvgTime() << "|" << std::endl << std::endl;
+
+		cout << endl;
+		cout << "|  avg|" << t_mul.getAvgTime() << "   |" << t_add .getAvgTime() << "   |" << endl;
 
 		//行列の中身を表示．邪魔になったらコメントアウトすること．
-		a.show();
-		x.show();
-		b.show();
-		ret.show();
+		//a.show();
+		//x.show();
+		//b.show();
+		//ret.show();
 
 		return 0;
 	}
@@ -219,7 +231,7 @@ int main(const int argc, const char** argv)
 			{
 				//計算 yに書き込み
 				const float v = x.data[i];
-				//y.data[i] = XXXXXXXX;
+				y.data[i] = 3.f * ((v * v * v * (v * (v * (v + 1.f) + 1.f) + 1.f)) +1.f);
 			}
 			t.end();
 			//std::cout << "after : time: " << t.getLastTime() << " ms" << std::endl;
@@ -268,7 +280,8 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < s; i++)
 			{
 				//計算 ansに書き込み
-				//ans.data[i] = XXXXXXXX
+				const float v = x.data[i];
+				ans.data[i] = (2.f * M_PI + sqrt(5) + pow(3.f, 2.0)) * v;
 			}
 
 			t.end();
@@ -284,11 +297,13 @@ int main(const int argc, const char** argv)
 			//先に計算する場合
 			t.start();
 			const int s = x.rows * x.cols;
-			//XXXXXXXX //定数値を計算
+			//定数値を計算
+			const float tmp = 2.f * M_PI + sqrt(5) + pow(3.f, 2.0);
 			for (int i = 0; i < s; i++)
 			{
 				//計算 yに書き込み
-				//y.data[i] = XXXXXXXX;
+				const float v = x.data[i];
+				y.data[i] = tmp * v;
 			}
 			t.end();
 			//std::cout << "after : time: " << t.getLastTime() << " ms" << std::endl;
