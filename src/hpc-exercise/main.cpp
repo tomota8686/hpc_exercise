@@ -437,7 +437,7 @@ int main(const int argc, const char** argv)
 				for (int i = 0; i < x.cols; i++)
 				{
 					//計算 ansに書き込み
-					//ans.data[XXXXXXXX]=xxxx
+					ans.data[ans.index(j, i)] = x.data[ans.index(j, i)] / 3.141592;
 				}
 			}
 			t.end();
@@ -452,12 +452,13 @@ int main(const int argc, const char** argv)
 		{
 			//乗算にした場合
 			t.start();
+			float tmp = (float)1 / 3.141592;
 			for (int j = 0; j < x.rows; j++)
 			{
 				for (int i = 0; i < x.cols; i++)
 				{
 					//計算
-					//y.data[XXXXXXXX]=xxxxx
+					y.data[y.index(j, i)] = x.data[ans.index(j, i)] * tmp;
 				}
 			}
 			t.end();
@@ -474,7 +475,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < s; i++)
 			{
 				//計算
-				//ans.data[XXXXXXXX]=xxxx
+				ans.data[s] = x.data[s] / 3.141592;
 			}
 			t.end();
 			//std::cout << "after : time: " << t.getLastTime() << " ms" << std::endl;
@@ -486,10 +487,11 @@ int main(const int argc, const char** argv)
 			//1重ループの乗算にした場合
 			t.start();
 			const int size = x.rows * x.cols;
+			const float tmp = (float)1 / 3.141592;
 			for (int i = 0; i < size; i++)
 			{
 				//計算
-				//y.data[XXXXXXXX]=xxxxx
+				y.data[size] = x.data[size] * tmp;
 			}
 			t.end();
 			//std::cout << "after : time: " << t.getLastTime() << " ms" << std::endl;
@@ -544,7 +546,7 @@ int main(const int argc, const char** argv)
 				for (int i = 0; i < ans.cols; i++)
 				{
 					//計算 ansに書き込み
-					//ans.data[XXXXXXXX]=xxxx
+					ans.data[ans.index(j, i)] = (a.data[a.index(j,i)] / b.data[b.index(j, i)]) * (c.data[c.index(j,i)] / d.data[d.index(j, i)]);
 				}
 			}
 			t.end();
@@ -564,7 +566,7 @@ int main(const int argc, const char** argv)
 				for (int i = 0; i < ret.cols; i++)
 				{
 					//計算 retに書き込み
-					//ret.data[XXXXXXXX]=xxxx
+					ret.data[ret.index(j, i)] = (a.data[a.index(j,i)] * c.data[c.index(j, i)]) / (b.data[b.index(j,i)] / d.data[d.index(j, i)]);
 				}
 			}
 			t.end();
@@ -634,7 +636,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < s; i++)
 			{
 				//計算（retに入れる）
-				//ret.data[i] = xxxxx;
+				ret.data[i] = x.data[i] * x.data[i];
 			}
 			t.end();
 		}
@@ -665,7 +667,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < s; i++)
 			{
 				//計算
-				//ret.data[i] = xxxx;
+				ret.data[i] = x.data[i] * x.data[i] * x.data[i];
 			}
 			t.end();
 		}
@@ -696,7 +698,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < s; i++)
 			{
 				//計算
-				//ret.data[i] = xxxx;
+				ret.data[i] = x.data[i] * x.data[i] * x.data[i] * x.data[i];
 			}
 			t.end();
 		}
@@ -705,33 +707,40 @@ int main(const int argc, const char** argv)
 
 
 		//n乗をpow計算(nを変える問題．powは32をサンプルとして入力している．)
-		pow_n = 32;
-		for (int j = 0; j < loop; j++)
+		for (pow_n = 5; pow_n < 10; pow_n++)
 		{
-			t.start();
-			//powで計算
-			const int s = x.rows * x.cols;
-			for (int i = 0; i < s; i++)
+			for (int j = 0; j < loop; j++)
 			{
-				//計算
-				ans.data[i] = pow(x.data[i], pow_n);
+				t.start();
+				//powで計算
+				const int s = x.rows * x.cols;
+				for (int i = 0; i < s; i++)
+				{
+					//計算
+					ans.data[i] = pow(x.data[i], pow_n);
+				}
+				t.end();
 			}
-			t.end();
-		}
-		std::cout << "|pow " << pow_n << "|" << t.getAvgTime() << "|" << std::endl;
+			std::cout << "|pow " << pow_n << "|" << t.getAvgTime() << "|" << std::endl;
 
-		//n乗をmulで計算（nは任意）
-		for (int j = 0; j < loop; j++)
-		{
-			t.start();
-			const int s = x.rows * x.cols;
-			for (int i = 0; i < s; i++)
+			//n乗をmulで計算（nは任意）
+			for (int j = 0; j < loop; j++)
 			{
-				//ret.data[i] = xxxx
+				t.start();
+				const int s = x.rows * x.cols;
+				for (int i = 0; i < s; i++)
+				{
+					for (int k = 0; k < pow_n; k++)
+					{
+						if (ret.data[i] == 0) ret.data[i] = 1;
+						ret.data[i] *= x.data[i];
+					}
+				}
+				t.end();
 			}
-			t.end();
+			std::cout << "|mul " << pow_n << "|" << t.getAvgTime() << "|" << std::endl;
 		}
-		std::cout << "|mul " << pow_n << "|" << t.getAvgTime() << "|" << std::endl;
+		
 
 
 		std::cout << std::endl << "info:" << std::endl;
@@ -806,7 +815,8 @@ int main(const int argc, const char** argv)
 		{
 			t.start();
 			// char
-			//XXXXXXXX
+			//計算（retに入れる）
+			mat_add(a_8s, b_8s, ret_8s);
 			t.end();
 			//std::cout<< "time: " << t.getLastTime() << " ms" << std::endl;
 		}
@@ -817,7 +827,7 @@ int main(const int argc, const char** argv)
 		{
 			t.start();
 			//short
-			//XXXXXXXX
+			mat_add(a_16s, b_16s, ret_16s);
 			t.end();
 			//std::cout<< "time: " << t.getLastTime() << " ms" << std::endl;
 		}
@@ -829,7 +839,7 @@ int main(const int argc, const char** argv)
 		{
 			t.start();
 			//int
-			//XXXXXXXX
+			mat_add(a_32s, b_32s, ret_32s);
 			t.end();
 			//std::cout<< "time: " << t.getLastTime() << " ms" << std::endl;
 		}
@@ -841,7 +851,7 @@ int main(const int argc, const char** argv)
 		{
 			t.start();
 			//float
-			//XXXXXXXX
+			mat_add(a_32f, b_32f, ret_32f);
 			t.end();
 			//std::cout<< "time: " << t.getLastTime() << " ms" << std::endl;
 		}
@@ -853,7 +863,7 @@ int main(const int argc, const char** argv)
 		{
 			t.start();
 			//double
-			//XXXXXXXX
+			mat_add(a_64f, b_64f, ret_64f);
 			t.end();
 			//std::cout<< "time: " << t.getLastTime() << " ms" << std::endl;
 		}
