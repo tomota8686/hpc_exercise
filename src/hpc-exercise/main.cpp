@@ -911,6 +911,8 @@ int main(const int argc, const char** argv)
 		Mat_32S x_32s(row, col);
 		Mat_32S ret_32s(row, col);
 
+		// Mat_32F x_32f(row, col);
+		// Mat_32F ret_32f(row, col);
 
 		CalcTime t;
 		//2x mul
@@ -922,6 +924,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32s.data[i]=xxxx
+				ret_32s.data[i] = x_32s.data[i] * 2;
 			}
 			t.end();
 		}
@@ -938,6 +941,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32s.data[i] =xxx
+				ret_32s.data[i] = x_32s.data[i] * 2.f;
 			}
 			t.end();
 		}
@@ -952,6 +956,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32s.data[i] =xxx
+				ret_32s.data[i] = x_32s.data[i] << 1;
 			}
 			t.end();
 		}
@@ -968,6 +973,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32s.data[i] =xxx
+				ret_32s.data[i] = x_32s.data[i] / 2;
 			}
 			t.end();
 		}
@@ -982,6 +988,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32s.data[i] =xxx
+				ret_32s.data[i] = x_32s.data[i] / 2.f;
 			}
 			t.end();
 		}
@@ -996,6 +1003,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32s.data[i] =xxx
+				ret_32s.data[i] = x_32s.data[i] * 0.5f;
 			}
 			t.end();
 		}
@@ -1010,6 +1018,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32s.data[i] =xxx
+				ret_32s.data[i] = x_32s.data[i] >> 1;
 			}
 			t.end();
 		}
@@ -1032,6 +1041,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = x_32f.data[i] / 1/2.f;
 			}
 			t.end();
 		}
@@ -1046,6 +1056,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = x_32f.data[i] * 0.5f;
 			}
 			t.end();
 		}
@@ -1091,6 +1102,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ans_32f.data[i] =
+				ans_32f.data[i] = x_32f.data[i] * 3.141f;
 			}
 			t.end();
 		}
@@ -1111,6 +1123,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32s.data[i] =
+				ret_32s.data[i] = x_32s.data[i] * 3.141;
 			}
 			t.end();
 		}
@@ -1125,6 +1138,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32s.data[i]
+				ret_32s.data[i] = x_32s.data[i] * 3216>>10;
 			}
 			t.end();
 		}
@@ -1144,6 +1158,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_16s.data[i] =
+				ret_16s.data[i] = x_16s.data[i] * 3216>>10;
 			}
 			t.end();
 		}
@@ -1194,6 +1209,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX ret_32f.data[i] =
+				ret_32f.data[i] = x_32f.data[i] + 3.131592f;
 			}
 			t.end();
 		}
@@ -1209,6 +1225,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = x_32f.data[i] * 3.131592f;
 			}
 			t.end();
 		}
@@ -1222,6 +1239,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = x_32f.data[i] / 3.131592f;
 			}
 			t.end();
 		}
@@ -1236,6 +1254,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = sqrt(x_32f.data[i]);
 			}
 			t.end();
 		}
@@ -1250,6 +1269,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = sin(x_32f.data[i]);
 			}
 			t.end();
 		}
@@ -1264,6 +1284,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = cos(x_32f.data[i]);
 			}
 			t.end();
 		}
@@ -1278,6 +1299,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = exp(x_32f.data[i]);
 			}
 			t.end();
 		}
@@ -1292,6 +1314,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = log(x_32f.data[i]);
 			}
 			t.end();
 		}
@@ -1324,6 +1347,7 @@ int main(const int argc, const char** argv)
 		{
 			//LUT作成
 			//XXXXXXXX
+			LUT[i] = (float)sin(i);
 		}
 		for (int k = 0; k < loop; k++)
 		{
@@ -1333,6 +1357,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = LUT[(int)x_32f.data[i]];
 			}
 			t.end();
 		}
@@ -1343,6 +1368,7 @@ int main(const int argc, const char** argv)
 		{
 			//LUT作成
 			//XXXXXXXX
+			LUT[i] = (float)cos(i);
 		}
 		for (int k = 0; k < loop; k++)
 		{
@@ -1352,6 +1378,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = LUT[(int)x_32f.data[i]];
 			}
 			t.end();
 		}
@@ -1362,6 +1389,7 @@ int main(const int argc, const char** argv)
 		{
 			//LUT作成
 			//XXXXXXXX
+			LUT[i] = (float)exp(i);
 		}
 		for (int k = 0; k < loop; k++)
 		{
@@ -1371,6 +1399,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = LUT[(int)x_32f.data[i]];
 			}
 			t.end();
 		}
@@ -1381,6 +1410,7 @@ int main(const int argc, const char** argv)
 		{
 			//LUT作成
 			//XXXXXXXXX
+			LUT[i] = (float)log(i);
 		}
 		for (int k = 0; k < loop; k++)
 		{
@@ -1390,6 +1420,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
+				ret_32f.data[i] = LUT[(int)x_32f.data[i]];
 			}
 			t.end();
 		}
@@ -1511,6 +1542,7 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX call rot
+				rot(a.data[i], b.data[i], x.data[i], y.data[i], radian);
 			}
 			t.end();
 		}
@@ -1523,8 +1555,8 @@ int main(const int argc, const char** argv)
 			const int size = a.cols * a.rows;
 			for (int i = 0; i < size; i++)
 			{
-				//XXXXXXXX
-				//XXXXXXXX
+				x.data[i] = a.data[i] * cos(radian);
+				y.data[i] = b.data[i] * sin(radian);
 			}
 			t.end();
 		}
@@ -1566,6 +1598,7 @@ int main(const int argc, const char** argv)
 				for (int i = 0; i < size; i++)
 				{
 					//XXXXXXXX
+					c.data[i] = a.data[i] * b.data[i];
 				}
 				t.end();
 			}
@@ -1588,6 +1621,7 @@ int main(const int argc, const char** argv)
 				for (int i = 0; i < size; i++)
 				{
 					//XXXXXXXX
+					a.data[i] *= b.data[i];
 				}
 				t.end();
 			}
@@ -1609,8 +1643,8 @@ int main(const int argc, const char** argv)
 	if (exercise == 14)
 	{
 		//空欄埋め問題
-		const int default_loop = 1000;
-		const int default_size = 128;
+		const int default_loop = 10;
+		const int default_size = 512;
 
 		const int loop = (arg_loop == 0) ? default_loop : arg_loop;
 		const int size = (arg_size == 0) ? default_size : arg_size;
@@ -1907,7 +1941,9 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i += 2)
 			{
 				//XXXXXXXX
+				y[i + 0] = a * x[i + 0] + b;
 				//XXXXXXXX
+				y[i + 1] = a * x[i + 1] + b;
 			}
 			t.end();
 		}
@@ -1921,9 +1957,13 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i += 4)
 			{
 				//XXXXXXXX
+				y[i + 0] = a * x[i + 0] + b;
 				//XXXXXXXX
+				y[i + 1] = a * x[i + 1] + b;
 				//XXXXXXXX
+				y[i + 2] = a * x[i + 2] + b;
 				//XXXXXXXX
+				y[i + 3] = a * x[i + 3] + b;
 			}
 			t.end();
 		}
@@ -1937,13 +1977,21 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i += 8)
 			{
 				//XXXXXXXX
+				y[i + 0] = a * x[i + 0] + b;
 				//XXXXXXXX
+				y[i + 1] = a * x[i + 1] + b;
 				//XXXXXXXX
+				y[i + 2] = a * x[i + 2] + b;
 				//XXXXXXXX
+				y[i + 3] = a * x[i + 3] + b;
 				//XXXXXXXX
+				y[i + 4] = a * x[i + 4] + b;
 				//XXXXXXXX
+				y[i + 5] = a * x[i + 5] + b;
 				//XXXXXXXX
+				y[i + 6] = a * x[i + 6] + b;
 				//XXXXXXXX
+				y[i + 7] = a * x[i + 7] + b;
 			}
 			t.end();
 		}
@@ -1957,21 +2005,37 @@ int main(const int argc, const char** argv)
 			for (int i = 0; i < size; i += 16)
 			{
 				//XXXXXXXX
+				y[i + 0] = a * x[i + 0] + b;
 				//XXXXXXXX
+				y[i + 1] = a * x[i + 1] + b;
 				//XXXXXXXX
+				y[i + 2] = a * x[i + 2] + b;
 				//XXXXXXXX
+				y[i + 3] = a * x[i + 3] + b;
 				//XXXXXXXX
+				y[i + 4] = a * x[i + 4] + b;
 				//XXXXXXXX
+				y[i + 5] = a * x[i + 5] + b;
 				//XXXXXXXX
+				y[i + 6] = a * x[i + 6] + b;
 				//XXXXXXXX
+				y[i + 7] = a * x[i + 7] + b;
 				//XXXXXXXX
+				y[i + 8] = a * x[i + 8] + b;
 				//XXXXXXXX
+				y[i + 9] = a * x[i + 9] + b;
 				//XXXXXXXX
+				y[i + 10] = a * x[i + 10] + b;
 				//XXXXXXXX
+				y[i + 11] = a * x[i + 11] + b;
 				//XXXXXXXX
+				y[i + 12] = a * x[i + 12] + b;
 				//XXXXXXXX
+				y[i + 13] = a * x[i + 13] + b;
 				//XXXXXXXX
+				y[i + 14] = a * x[i + 14] + b;
 				//XXXXXXXX
+				y[i + 15] = a * x[i + 15] + b;
 			}
 			t.end();
 		}
@@ -1984,38 +2048,70 @@ int main(const int argc, const char** argv)
 			t.start();
 			for (int i = 0; i < size; i += 32)
 			{
+				///XXXXXXXX
+				y[i + 0] = a * x[i + 0] + b;
 				//XXXXXXXX
+				y[i + 1] = a * x[i + 1] + b;
 				//XXXXXXXX
+				y[i + 2] = a * x[i + 2] + b;
 				//XXXXXXXX
+				y[i + 3] = a * x[i + 3] + b;
 				//XXXXXXXX
+				y[i + 4] = a * x[i + 4] + b;
 				//XXXXXXXX
+				y[i + 5] = a * x[i + 5] + b;
 				//XXXXXXXX
+				y[i + 6] = a * x[i + 6] + b;
 				//XXXXXXXX
+				y[i + 7] = a * x[i + 7] + b;
 				//XXXXXXXX
+				y[i + 8] = a * x[i + 8] + b;
 				//XXXXXXXX
+				y[i + 9] = a * x[i + 9] + b;
 				//XXXXXXXX
+				y[i + 10] = a * x[i + 10] + b;
 				//XXXXXXXX
+				y[i + 11] = a * x[i + 11] + b;
 				//XXXXXXXX
+				y[i + 12] = a * x[i + 12] + b;
 				//XXXXXXXX
+				y[i + 13] = a * x[i + 13] + b;
 				//XXXXXXXX
+				y[i + 14] = a * x[i + 14] + b;
 				//XXXXXXXX
+				y[i + 15] = a * x[i + 15] + b;
+				////XXXXXXXX
+				y[i + 16] = a * x[i + 16] + b;
 				//XXXXXXXX
+				y[i + 17] = a * x[i + 17] + b;
 				//XXXXXXXX
+				y[i + 18] = a * x[i + 18] + b;
 				//XXXXXXXX
+				y[i + 19] = a * x[i + 19] + b;
 				//XXXXXXXX
+				y[i + 20] = a * x[i + 20] + b;
 				//XXXXXXXX
+				y[i + 21] = a * x[i + 21] + b;
 				//XXXXXXXX
+				y[i + 22] = a * x[i + 22] + b;
 				//XXXXXXXX
+				y[i + 23] = a * x[i + 23] + b;
 				//XXXXXXXX
+				y[i + 24] = a * x[i + 24] + b;
 				//XXXXXXXX
+				y[i + 25] = a * x[i + 25] + b;
 				//XXXXXXXX
+				y[i + 26] = a * x[i + 26] + b;
 				//XXXXXXXX
+				y[i + 27] = a * x[i + 27] + b;
 				//XXXXXXXX
+				y[i + 28] = a * x[i + 28] + b;
 				//XXXXXXXX
+				y[i + 29] = a * x[i + 29] + b;
 				//XXXXXXXX
+				y[i + 30] = a * x[i + 30] + b;
 				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
+				y[i + 31] = a * x[i + 31] + b;
 			}
 			t.end();
 		}
@@ -2028,70 +2124,134 @@ int main(const int argc, const char** argv)
 			t.start();
 			for (int i = 0; i < size; i += 64)
 			{
+				///XXXXXXXX
+				y[i + 0] = a * x[i + 0] + b;
 				//XXXXXXXX
+				y[i + 1] = a * x[i + 1] + b;
 				//XXXXXXXX
+				y[i + 2] = a * x[i + 2] + b;
 				//XXXXXXXX
+				y[i + 3] = a * x[i + 3] + b;
 				//XXXXXXXX
+				y[i + 4] = a * x[i + 4] + b;
 				//XXXXXXXX
+				y[i + 5] = a * x[i + 5] + b;
 				//XXXXXXXX
+				y[i + 6] = a * x[i + 6] + b;
 				//XXXXXXXX
+				y[i + 7] = a * x[i + 7] + b;
 				//XXXXXXXX
+				y[i + 8] = a * x[i + 8] + b;
 				//XXXXXXXX
+				y[i + 9] = a * x[i + 9] + b;
 				//XXXXXXXX
+				y[i + 10] = a * x[i + 10] + b;
 				//XXXXXXXX
+				y[i + 11] = a * x[i + 11] + b;
 				//XXXXXXXX
+				y[i + 12] = a * x[i + 12] + b;
 				//XXXXXXXX
+				y[i + 13] = a * x[i + 13] + b;
 				//XXXXXXXX
+				y[i + 14] = a * x[i + 14] + b;
 				//XXXXXXXX
+				y[i + 15] = a * x[i + 15] + b;
+				////XXXXXXXX
+				y[i + 16] = a * x[i + 16] + b;
 				//XXXXXXXX
+				y[i + 17] = a * x[i + 17] + b;
 				//XXXXXXXX
+				y[i + 18] = a * x[i + 18] + b;
 				//XXXXXXXX
+				y[i + 19] = a * x[i + 19] + b;
 				//XXXXXXXX
+				y[i + 20] = a * x[i + 20] + b;
 				//XXXXXXXX
+				y[i + 21] = a * x[i + 21] + b;
 				//XXXXXXXX
+				y[i + 22] = a * x[i + 22] + b;
 				//XXXXXXXX
+				y[i + 23] = a * x[i + 23] + b;
 				//XXXXXXXX
+				y[i + 24] = a * x[i + 24] + b;
 				//XXXXXXXX
+				y[i + 25] = a * x[i + 25] + b;
 				//XXXXXXXX
+				y[i + 26] = a * x[i + 26] + b;
 				//XXXXXXXX
+				y[i + 27] = a * x[i + 27] + b;
 				//XXXXXXXX
+				y[i + 28] = a * x[i + 28] + b;
 				//XXXXXXXX
+				y[i + 29] = a * x[i + 29] + b;
 				//XXXXXXXX
+				y[i + 30] = a * x[i + 30] + b;
 				//XXXXXXXX
+				y[i + 31] = a * x[i + 31] + b;
+				///XXXXXXXX
+				y[i + 32] = a * x[i + 32] + b;
 				//XXXXXXXX
+				y[i + 33] = a * x[i + 33] + b;
 				//XXXXXXXX
+				y[i + 34] = a * x[i + 34] + b;
 				//XXXXXXXX
+				y[i + 35] = a * x[i + 35] + b;
 				//XXXXXXXX
+				y[i + 36] = a * x[i + 36] + b;
 				//XXXXXXXX
+				y[i + 37] = a * x[i + 37] + b;
 				//XXXXXXXX
+				y[i + 38] = a * x[i + 38] + b;
 				//XXXXXXXX
+				y[i + 39] = a * x[i + 39] + b;
 				//XXXXXXXX
+				y[i + 40] = a * x[i + 40] + b;
 				//XXXXXXXX
+				y[i + 41] = a * x[i + 41] + b;
 				//XXXXXXXX
+				y[i + 42] = a * x[i + 42] + b;
 				//XXXXXXXX
+				y[i + 43] = a * x[i + 43] + b;
 				//XXXXXXXX
+				y[i + 44] = a * x[i + 44] + b;
 				//XXXXXXXX
+				y[i + 45] = a * x[i + 45] + b;
 				//XXXXXXXX
+				y[i + 46] = a * x[i + 46] + b;
 				//XXXXXXXX
+				y[i + 47] = a * x[i + 47] + b;
+				////XXXXXXXX
+				y[i + 48] = a * x[i + 48] + b;
 				//XXXXXXXX
+				y[i + 49] = a * x[i + 49] + b;
 				//XXXXXXXX
+				y[i + 50] = a * x[i + 50] + b;
 				//XXXXXXXX
+				y[i + 51] = a * x[i + 51] + b;
 				//XXXXXXXX
+				y[i + 52] = a * x[i + 52] + b;
 				//XXXXXXXX
+				y[i + 53] = a * x[i + 53] + b;
 				//XXXXXXXX
+				y[i + 54] = a * x[i + 54] + b;
 				//XXXXXXXX
+				y[i + 55] = a * x[i + 55] + b;
 				//XXXXXXXX
+				y[i + 56] = a * x[i + 56] + b;
 				//XXXXXXXX
+				y[i + 57] = a * x[i + 57] + b;
 				//XXXXXXXX
+				y[i + 58] = a * x[i + 58] + b;
 				//XXXXXXXX
+				y[i + 59] = a * x[i + 59] + b;
 				//XXXXXXXX
+				y[i + 60] = a * x[i + 60] + b;
 				//XXXXXXXX
+				y[i + 61] = a * x[i + 61] + b;
 				//XXXXXXXX
+				y[i + 62] = a * x[i + 62] + b;
 				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
+				y[i + 63] = a * x[i + 63] + b;
 			}
 			t.end();
 		}
@@ -3805,7 +3965,7 @@ void GEMM(Mat_32F& a, Mat_32F& b, Mat_32F& c)
 }
 
 //課題12用
-inline void rot(double a, double b, double& x, double& y, double radian)
+__attribute__((always_inline)) void rot(double a, double b, double& x, double& y, double radian)
 {
 	x = a * cos(radian);
 	y = b * sin(radian);
