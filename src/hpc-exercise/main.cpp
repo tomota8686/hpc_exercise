@@ -2322,12 +2322,12 @@ int main(const int argc, const char** argv)
 		{
 			t.start();
 			{
-				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
+				y[0] = (x[0] + x[1])/2;
+				y[size-1] = (x[size-2] + x[size-1])/2;
+				for(int i=1; i<size-1; i++)
+				{
+					y[i] = (x[i-1] + x[i] + x[i+1])/3;
+				}
 			}
 			t.end();
 		}
@@ -2393,12 +2393,15 @@ int main(const int argc, const char** argv)
 		{
 			t.start();
 			const int size = width * height;
-			/*//XXXXXXXX// hint: int* pa = ma.data;
+			//XXXXXXXX// hint: int* pa = ma.data;
 			//XXXXXXXX
+			int* pa = ma.data;
+			int* pb = mb.data;
 			for (int i = 0; i < size; i++)
 			{
 				//XXXXXXXX
-			}*/
+				*pa++ = *pa + *pb++; 
+			}
 
 			t.end();
 		}
@@ -2452,18 +2455,19 @@ int main(const int argc, const char** argv)
 	//また，並列化を有効にする場合としない場合の計算時間を比較せよ．
 	if (exercise == 18)
 	{
+
 		//空欄埋め問題
 		const int default_loop = 64;
 		const int loop = (arg_loop == 0) ? default_loop : arg_loop;
 
 		std::cout << "exercise 18: loop = " << loop << std::endl;
 		//XXXXXXXX hint: #pragma...
+		#pragma omp parallel for
 		for (int i = 0; i < 100; i++)
 		{
 			std::cout << i << std::endl; //並列化したい処理
 		}
-
-		std::cout << "default parameter: default_loop = " << default_loop << ", default_size = 0" << std::endl;
+		
 		return 0;
 	}
 #endif
@@ -2515,6 +2519,7 @@ int main(const int argc, const char** argv)
 		{
 			int sum = 0;
 			//XXXXXXXX
+			#pragma omp parallel for
 			for (int i = 0; i < size; i++)
 			{
 				sum += i;
@@ -2529,6 +2534,7 @@ int main(const int argc, const char** argv)
 		{
 			int sum = 0;
 			//XXXXXXXX hint reduction指定
+			#pragma omp parallel for reduction(+: sum)
 			for (int i = 0; i < size; i++)
 			{
 				sum += i;
@@ -2572,6 +2578,8 @@ int main(const int argc, const char** argv)
 			t.start();
 			//#pragma omp parallel for num_threads(n)で並列化，nに任意の整数を入れる
 			//XXXXXXXX
+			#pragma omp parallel for num_threads(5000)
+			//#pragma omp parallel
 			for (int i = 0; i < size; ++i)
 			{
 				float* pc = c.data + i * size;
@@ -2589,7 +2597,7 @@ int main(const int argc, const char** argv)
 			t.end();
 			//std::cout << "time : " << t.getLastTime() << std::endl;
 		}
-		std::cout << "|num_threads(8)|time [ms]|" << std::endl;
+		std::cout << "|num_threads(5000)|time [ms]|" << std::endl;
 		std::cout << "|--------------|---------|" << std::endl;
 		std::cout << "|xx            |" << t.getAvgTime() << "|" << std::endl;
 
@@ -2600,7 +2608,7 @@ int main(const int argc, const char** argv)
 		//詳細は，並列化用の関数群 omp.h　の章を参照のこと．
 		//上記は，何度もコンパイルしないといけないが，下記は一度だけでよいのでif (isUseSetNumThread)のコメントアウトなどをうまく使うこと．
 		bool isUseSetNumThread = false;
-		//if (isUseSetNumThread)
+		if (isUseSetNumThread)
 		{
 			const int threadMax = 32;
 			std::cout << "|set_thread|time [ms]|" << std::endl;
@@ -2654,6 +2662,8 @@ int main(const int argc, const char** argv)
 		//加算
 		//e = a + b
 		//XXXXXXXX
+		e = _mm256_add_ps(a, b);
+		
 		std::cout << "add a b: ";
 		print_m256(e);
 		//e = c + d
@@ -2684,10 +2694,12 @@ int main(const int argc, const char** argv)
 		//減算
 		//e = a - b
 		//XXXXXXXX
+		e = _mm256_sub_ps(a, b);
 		std::cout << "sub a b: ";
 		print_m256(e);
 		//e = c - d
 		//XXXXXXXX
+		e = _mm256_sub_ps(c, d);
 		std::cout << "sub c d: ";
 		print_m256(e);
 
@@ -2695,10 +2707,12 @@ int main(const int argc, const char** argv)
 		//乗算
 		//e = a * b
 		//XXXXXXXX
+		e = _mm256_mul_ps(a, b);
 		std::cout << "mul a b: ";
 		print_m256(e);
 		//e = c * d
 		//XXXXXXXX
+		e = _mm256_mul_ps(c, d);
 		std::cout << "mul c d: ";
 		print_m256(e);
 
@@ -2706,10 +2720,12 @@ int main(const int argc, const char** argv)
 		//除算
 		//e = a / b
 		//XXXXXXXX
+		e = _mm256_div_ps(a, b);
 		std::cout << "div a b: ";
 		print_m256(e);
 		//e = c / d
 		//XXXXXXXX
+		e = _mm256_div_ps(c, d);
 		std::cout << "div c d: ";
 		print_m256(e);
 
@@ -2773,9 +2789,13 @@ int main(const int argc, const char** argv)
 				//mul,addを使って（結果はtempに入れること）
 				__m256 temp;
 				//XXXXXXXX
+				temp = _mm256_add_ps(_mm256_mul_ps(ma, mx), mb);
 				//XXXXXXXX
+				temp = _mm256_add_ps(_mm256_mul_ps(temp, mx), mb);
 				//XXXXXXXX
+				temp = _mm256_add_ps(_mm256_mul_ps(temp, mx), mb);
 				//XXXXXXXX
+				temp = _mm256_add_ps(_mm256_mul_ps(temp, mx), mb);
 
 				_mm256_store_ps(pc + i, temp);
 			}
@@ -2802,10 +2822,10 @@ int main(const int argc, const char** argv)
 
 				//fmaを使って（結果はtempに入れること）
 				__m256 temp;
-				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
+				temp = _mm256_fmadd_ps(ma, mx, mb);
+				temp = _mm256_fmadd_ps(temp, mx, mb);
+				temp = _mm256_fmadd_ps(temp, mx, mb);
+				temp = _mm256_fmadd_ps(temp, mx, mb);
 
 				_mm256_store_ps(pc + i, temp);
 			}
