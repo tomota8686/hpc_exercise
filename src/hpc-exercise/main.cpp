@@ -2901,6 +2901,7 @@ int main(const int argc, const char** argv)
 				__m256 temp;
 				//divを使って
 				//XXXXXXXX
+				
 
 				_mm256_store_ps(c.data + i, temp);
 			}
