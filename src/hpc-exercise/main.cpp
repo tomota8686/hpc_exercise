@@ -2838,8 +2838,8 @@ int main(const int argc, const char** argv)
 
 		//loofline test
 		//上記の実験がしたいときは，下記フラグを制御するとよい．
-		const bool isUseLoopLineTest = false;
-		//if (isUseLoopLineTest)
+		const bool isUseLoopLineTest = true;
+		if (isUseLoopLineTest)
 		{
 			std::cout << "plot loofline" << std::endl;
 
@@ -2901,6 +2901,7 @@ int main(const int argc, const char** argv)
 				__m256 temp;
 				//divを使って
 				//XXXXXXXX
+				temp = _mm256_div_ps(ma, mb);
 				
 
 				_mm256_store_ps(c.data + i, temp);
@@ -2923,6 +2924,7 @@ int main(const int argc, const char** argv)
 				__m256 temp;
 				//rcpとmulをつかって
 				//XXXXXXXX
+				temp = _mm256_mul_ps(ma, _mm256_rcp_ps(mb));
 
 				_mm256_store_ps(c.data + i, temp);
 			}
@@ -2942,6 +2944,7 @@ int main(const int argc, const char** argv)
 				__m256 temp;
 				//sqrtを使って
 				//XXXXXXXX
+				temp = _mm256_sqrt_ps(ma);
 
 				_mm256_store_ps(c.data + i, temp);
 			}
@@ -2960,7 +2963,7 @@ int main(const int argc, const char** argv)
 
 				__m256 temp;
 				//rsqrtとrcpを使って
-				//XXXXXXXX
+				//XXXXXXX
 				temp = _mm256_rcp_ps(_mm256_rsqrt_ps(ma));
 
 				_mm256_store_ps(c.data + i, temp);
@@ -2981,6 +2984,7 @@ int main(const int argc, const char** argv)
 				__m256 temp;
 				//rsqrtとmulを使って（ルートの逆数は乗算で戻る）
 				//XXXXXXXX
+				temp = _mm256_mul_ps(ma, _mm256_rsqrt_ps(mb));
 
 				_mm256_store_ps(c.data + i, temp);
 			}
@@ -3000,6 +3004,7 @@ int main(const int argc, const char** argv)
 				__m256 temp;
 				//subとmaxを使って
 				//XXXXXXXX
+				temp = _mm256_max_ps(_mm256_sub_ps(ma, mb),_mm256_sub_ps(mb, ma));
 
 				_mm256_store_ps(c.data + i, temp);
 			}
@@ -3022,6 +3027,7 @@ int main(const int argc, const char** argv)
 				__m256 temp;
 				//subとnotを使って．notのマスクはabsmask
 				//XXXXXXXX
+				temp = _mm256_and_ps(_mm256_sub_ps(ma, mb), *(const __m256*)(&v32f_absmask[0]));
 
 				_mm256_store_ps(c.data + i, temp);
 			}
@@ -3100,9 +3106,12 @@ int main(const int argc, const char** argv)
 			{
 				__m256 ma = _mm256_load_ps(a.data + i);
 				//haddを使って
+				ma = _mm256_hadd_ps(ma, ma);
+				ma = _mm256_hadd_ps(ma, ma);
 				//XXXXXXXX
 				//XXXXXXXX
 				//hint sum+= XXXXXXXX
+				sum = ((float*)&ma)[0] + ((float*)&ma)[4];
 			}
 			t.end();
 			ans_hadd = sum;
@@ -3122,7 +3131,9 @@ int main(const int argc, const char** argv)
 				__m256 ma = _mm256_load_ps(a.data + i);
 				//dpを使って
 				//XXXXXXXX
+				ma = _mm256_dp_ps(ma, ma, 0xFF);
 				//hint: sum+=XXXXXXXX
+				sum = ((float*)&ma)[0] + ((float*)&ma)[4];
 			}
 			t.end();
 			ans_dp = sum;
@@ -3187,9 +3198,10 @@ int main(const int argc, const char** argv)
 
 				__m256 temp;
 				//cmp, mul, blendvを使って（blendを使わずにビット演算でもできる）
+				temp = _mm256_mul_ps(ma, _mm256_mul_ps(ma, ma));
 				//XXXXXXXX
-				//XXXXXXXX
-				//XXXXXXXX
+				__m256 mask = _mm256_cmp_ps(ma, mth, _CMP_GT_OQ);
+				temp = _mm256_blendv_ps(temp, ma, mask);
 
 				_mm256_store_ps(b.data + i, temp);
 			}
