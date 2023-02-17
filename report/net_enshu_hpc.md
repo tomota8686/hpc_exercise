@@ -780,8 +780,62 @@ scalar計算よりvector計算のほうが5倍ほど速くなった。
 
 # 課題26
 SIMD命令を使う場合におけるループアンローリングを8, 16, 32, 64と行い計算時間を比較する。
+ソースは以下の通りである。今回、例をとって32段のループアンローリングを示す。
 
-##
+```cpp
+// unrolling 32
+for (int i = 0; i < matsize; i += 32)
+{
+    __m256 ma = _mm256_load_ps(a + i);
+    __m256 mb = _mm256_load_ps(b + i);
+    _mm256_store_ps(c + i, _mm256_add_ps(ma, mb));
+
+    ma = _mm256_load_ps(a + i + 8);
+    mb = _mm256_load_ps(b + i + 8);
+    _mm256_store_ps(c + i + 8, _mm256_add_ps(ma, mb));
+
+    ma = _mm256_load_ps(a + i + 16);
+    mb = _mm256_load_ps(b + i + 16);
+    _mm256_store_ps(c + i + 16, _mm256_add_ps(ma, mb));
+
+    ma = _mm256_load_ps(a + i + 24);
+    mb = _mm256_load_ps(b + i + 24);
+    _mm256_store_ps(c + i + 24, _mm256_add_ps(ma, mb));
+}
+```
+## 結果
+
+## 考察
+
+# 課題27
+8x8のfloatの転置の動作を確認する。
+結果は以下のとおりである。
+
+また、4x4のdouble型のデータ転置を作成する。
+ソースは以下の通りになる。
+```cpp
+__m256  tmp[4], tmpp[4];
+for(int i=0;i<4;i+=2)
+{
+    tmp[i+0] = _mm256_unpacklo_ps(ma[i], ma[i+1]);
+    tmp[i+1] = _mm256_unpackhi_ps(ma[i], ma[i+1]);
+}
+tmpp[0] = _mm256_shuffle_ps(tmp[0],tmp[2],_MM_SHUFFLE(1,0,1,0));  
+tmpp[1] = _mm256_shuffle_ps(tmp[0],tmp[2],_MM_SHUFFLE(3,2,3,2));
+tmpp[2] = _mm256_shuffle_ps(tmp[1],tmp[3],_MM_SHUFFLE(1,0,1,0));
+tmpp[3] = _mm256_shuffle_ps(tmp[1],tmp[3],_MM_SHUFFLE(3,2,3,2));
+for(int i=0;i<4;i++)
+{
+    mb[i+0] = _mm256_permute2f128_ps(tmpp[i], tmpp[i+4], 0x20);
+}
+```
+
+# 課題28
+__256i(int型)を__m256(float型)に変換する。
+以下の関数を用いて変換を行った。
+```cpp
+m32f = _mm256_cvtepu32_ps(m32i);
+```
 
 
 # 課題２２
